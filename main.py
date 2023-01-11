@@ -15,6 +15,8 @@ def choose_option():
     point_or_percent = input('Enter selected choice: ')
 
     if point_or_percent.isdigit():
+        point_or_percent = int(point_or_percent)
+
         if point_or_percent == 1:
             clear_console()
             total_points()
@@ -31,8 +33,49 @@ def total_points():
     points_input = input('\nEnter the total points: ')
 
     if points_input.isdigit():
-        print('worked')
         points_input = int(points_input)
+        
+        if points_input > 5000:
+            clear_console()
+            print('Total points must be equal or less than 5000')
+            total_points()
+        elif points_input >= 4350:
+            clear_console()
+            print(points_input, 'points is an A')
+        elif points_input >= 4200:
+            clear_console()
+            print(points_input, 'points is an A-')
+        elif points_input >= 4050:
+            clear_console()
+            print(points_input, 'points is a B+')
+        elif points_input >= 3900:
+            clear_console()
+            print(points_input, 'points is a B')
+        elif points_input >= 3750:
+            clear_console()
+            print(points_input, 'points is a B-')
+        elif points_input >= 3600:
+            clear_console()
+            print(points_input, 'points is a C+')
+        elif points_input >= 3450:
+            clear_console()
+            print(points_input, 'points is a C')
+        elif points_input >= 3300:
+            clear_console()
+            print(points_input, 'points is a C-')
+        elif points_input >= 3150:
+            clear_console()
+            print(points_input, 'points is a D+')
+        elif points_input >= 3000:
+            clear_console()
+            print(points_input, 'points is a D')
+        elif points_input >= 2822:
+            clear_console()
+            print(points_input, 'points is a D-')
+        else:
+            clear_console()
+            print(points_input, 'points is a fail :(')
+
     else:
         clear_console()
         print('Please only enter digits\n')
