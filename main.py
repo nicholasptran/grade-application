@@ -1,8 +1,12 @@
 import os
+import platform
 
 # clear console
 def clear_console():
-    os.system('cls')
+    if platform.system() == 'Windows':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 # displays welcome screen
 def welcome():
