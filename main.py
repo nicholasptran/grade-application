@@ -16,8 +16,10 @@ def choose_option():
 
     if point_or_percent.isdigit():
         if point_or_percent == 1:
+            clear_console()
             total_points()
         else:
+            clear_console()
             grade_percent()
 
     else:
@@ -26,13 +28,68 @@ def choose_option():
 
 # they selected option 1
 def total_points():
-    clear_console()
-    points_input = input('Enter the total points: ')
+    points_input = input('\nEnter the total points: ')
+
+    if points_input.isdigit():
+        print('worked')
+        points_input = int(points_input)
+    else:
+        clear_console()
+        print('Please only enter digits\n')
+        total_points()
 
 # option 2
 def grade_percent():
-    clear_console()
-    percent_input = input('Enter your grade %: ')
+    percent_input = input('\nEnter your grade %: ')
+
+    if percent_input.isdigit():
+        percent_input = int(percent_input)
+
+        if percent_input > 100:
+            clear_console()
+            print('Grade must be equal or less than 100%')
+            grade_percent()
+        elif percent_input >= 87:
+            clear_console()
+            print(percent_input, 'is an A\n')
+        elif percent_input >= 84:
+            clear_console()
+            print(percent_input, 'is an A-\n')
+        elif percent_input >= 81:
+            clear_console()
+            print(percent_input, 'is a B+\n')
+        elif percent_input >= 78:
+            clear_console()
+            print(percent_input, 'is a B\n')
+        elif percent_input >= 75:
+            clear_console()
+            print(percent_input, 'is a B-\n')
+        elif percent_input >= 72:
+            clear_console()
+            print(percent_input, 'is a C+\n')
+        elif percent_input >= 69:
+            clear_console()
+            print(percent_input, 'is a C\n')
+        elif percent_input >= 66:
+            clear_console()
+            print(percent_input, 'is a C-\n')
+        elif percent_input >= 63:
+            clear_console()
+            print(percent_input, 'is a D+\n')
+        elif percent_input >= 60:
+            clear_console()
+            print(percent_input, 'is a D\n')
+        elif percent_input >= 57:
+            clear_console()
+            print(percent_input, 'is a D-\n')
+        else:
+            clear_console()
+            print(percent_input, 'is a fail :(')
+
+    else:
+        clear_console()
+        print('Please only enter digits\n')
+        grade_percent()
 
 
 def main():
