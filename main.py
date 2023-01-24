@@ -1,7 +1,7 @@
 import os
 import platform
 
-# clear console
+# clear console, check which os for console clear
 def clear_console():
     if platform.system() == 'Windows':
         os.system('cls')
