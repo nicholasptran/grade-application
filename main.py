@@ -1,18 +1,38 @@
+"main.py"
+
 import os
 import platform
+import logging
+import log_stuff
+import database
 
 # clear console, check which os for console clear
+
+
 def clear_console():
     if platform.system() == 'Windows':
         os.system('cls')
+        logging.debug('Cleared Windows CMD')
     else:
         os.system('clear')
+        logging.debug('Cleared Linux Bash')
 
 # displays welcome screen
+
+
 def welcome():
-    print('\nGrade Calculator\n')
-    print('\nWould you like to use:')
-    print('\n\t[1] Total Points \n\t[2] Grade %\n')
+    clear_console()
+    print("""
+Grade Calculator
+
+
+
+[1] Total Points
+[2] Grade %
+    """)
+    logging.debug('Printed welcome screen')
+
+
 
 # choose option
 def choose_option():
@@ -24,21 +44,29 @@ def choose_option():
         if point_or_percent == 1:
             clear_console()
             total_points()
-        else:
+        elif point_or_percent == 2:
             clear_console()
             grade_percent()
+        else:
+            logging.warning('User selected an unavailable option in choose_option')
+            clear_console()
+            print('There are only two options.\n')
+            choose_option()
 
     else:
+        logging.warning('User inputted characters into choose_option()')
         print('Please only enter digits.\n')
         choose_option()
 
 # they selected option 1
+
+
 def total_points():
     points_input = input('\nEnter the total points: ')
 
     if points_input.isdigit():
         points_input = int(points_input)
-        
+
         if points_input > 5000:
             clear_console()
             print('Total points must be equal or less than 5000')
