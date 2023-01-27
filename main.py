@@ -3,8 +3,7 @@
 import os
 import platform
 import logging
-import log_stuff
-import database
+import app
 
 # clear console, check which os for console clear
 
@@ -16,6 +15,7 @@ def clear_console():
     else:
         os.system('clear')
         logging.debug('Cleared Linux Bash')
+
 
 # displays welcome screen
 
@@ -33,7 +33,6 @@ Grade Calculator
     logging.debug('Printed welcome screen')
 
 
-
 # choose option
 def choose_option():
     point_or_percent = input('Enter selected choice: ')
@@ -48,7 +47,8 @@ def choose_option():
             clear_console()
             grade_percent()
         else:
-            logging.warning('User selected an unavailable option in choose_option')
+            logging.warning(
+                'User selected an unavailable option in choose_option')
             clear_console()
             print('There are only two options.\n')
             choose_option()
@@ -114,6 +114,8 @@ def total_points():
         total_points()
 
 # option 2
+
+
 def grade_percent():
     percent_input = input('\nEnter your grade %: ')
 
