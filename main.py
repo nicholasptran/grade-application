@@ -3,176 +3,92 @@
 import os
 import platform
 import logging
+import datetime
+import pandas as pd
 import app
 
-# clear console, check which os for console clear
+logging.debug('App started')
+
+# initialize variables
+user_name = os.getlogin()
+user_date = datetime.datetime.now()
+user_platform = platform.system()
 
 
-def clear_console():
-    if platform.system() == 'Windows':
+def clear_console(users_platform):
+    '''checks platform to do cls or clear'''
+    if users_platform == 'Windows':
         os.system('cls')
-        logging.debug('Cleared Windows CMD')
+        logging.debug('CMD cleared')
     else:
         os.system('clear')
-        logging.debug('Cleared Linux Bash')
-
-
-# displays welcome screen
+        logging.debug('bash cleared')
 
 
 def welcome():
-    clear_console()
-    print("""
+    '''Displays a welcome screen'''
+    clear_console(user_platform)
+    print(f"""
 Grade Calculator
 
+{user_date} - {user_name}
 
 
-[1] Total Points
-[2] Grade %
+
     """)
     logging.debug('Printed welcome screen')
 
 
-# choose option
-def choose_option():
-    point_or_percent = input('Enter selected choice: ')
+def raise_func(ex):
+    '''use to raise an exception in a lambda function'''
+    raise ex
 
-    if point_or_percent.isdigit():
-        point_or_percent = int(point_or_percent)
-
-        if point_or_percent == 1:
-            clear_console()
-            total_points()
-        elif point_or_percent == 2:
-            clear_console()
-            grade_percent()
-        else:
-            logging.warning(
-                'User selected an unavailable option in choose_option')
-            clear_console()
-            print('There are only two options.\n')
-            choose_option()
-
-    else:
-        logging.warning('User inputted characters into choose_option()')
-        print('Please only enter digits.\n')
-        choose_option()
-
-# they selected option 1
+# TODO turn the max points into a function
+# get query as df and find threshold date for max points
+max_points_query = pd.read_sql('select * from thresholds', app.database.connect_to_db.conn)
 
 
-def total_points():
-    points_input = input('\nEnter the total points: ')
+# returns the max points of the last passed date threshold
+max_points_df = pd.DataFrame(max_points_query)
 
-    if points_input.isdigit():
-        points_input = int(points_input)
-
-        if points_input > 5000:
-            clear_console()
-            print('Total points must be equal or less than 5000')
-            total_points()
-        elif points_input >= 4350:
-            clear_console()
-            print(points_input, 'points is an A')
-        elif points_input >= 4200:
-            clear_console()
-            print(points_input, 'points is an A-')
-        elif points_input >= 4050:
-            clear_console()
-            print(points_input, 'points is a B+')
-        elif points_input >= 3900:
-            clear_console()
-            print(points_input, 'points is a B')
-        elif points_input >= 3750:
-            clear_console()
-            print(points_input, 'points is a B-')
-        elif points_input >= 3600:
-            clear_console()
-            print(points_input, 'points is a C+')
-        elif points_input >= 3450:
-            clear_console()
-            print(points_input, 'points is a C')
-        elif points_input >= 3300:
-            clear_console()
-            print(points_input, 'points is a C-')
-        elif points_input >= 3150:
-            clear_console()
-            print(points_input, 'points is a D+')
-        elif points_input >= 3000:
-            clear_console()
-            print(points_input, 'points is a D')
-        elif points_input >= 2822:
-            clear_console()
-            print(points_input, 'points is a D-')
-        else:
-            clear_console()
-            print(points_input, 'points is a fail :(')
-
-    else:
-        clear_console()
-        print('Please only enter digits\n')
-        total_points()
-
-# option 2
-
-
-def grade_percent():
-    percent_input = input('\nEnter your grade %: ')
-
-    if percent_input.isdigit():
-        percent_input = int(percent_input)
-
-        if percent_input > 100:
-            clear_console()
-            print('Grade must be equal or less than 100%')
-            grade_percent()
-        elif percent_input >= 87:
-            clear_console()
-            print(percent_input, 'is an A\n')
-        elif percent_input >= 84:
-            clear_console()
-            print(percent_input, 'is an A-\n')
-        elif percent_input >= 81:
-            clear_console()
-            print(percent_input, 'is a B+\n')
-        elif percent_input >= 78:
-            clear_console()
-            print(percent_input, 'is a B\n')
-        elif percent_input >= 75:
-            clear_console()
-            print(percent_input, 'is a B-\n')
-        elif percent_input >= 72:
-            clear_console()
-            print(percent_input, 'is a C+\n')
-        elif percent_input >= 69:
-            clear_console()
-            print(percent_input, 'is a C\n')
-        elif percent_input >= 66:
-            clear_console()
-            print(percent_input, 'is a C-\n')
-        elif percent_input >= 63:
-            clear_console()
-            print(percent_input, 'is a D+\n')
-        elif percent_input >= 60:
-            clear_console()
-            print(percent_input, 'is a D\n')
-        elif percent_input >= 57:
-            clear_console()
-            print(percent_input, 'is a D-\n')
-        else:
-            clear_console()
-            print(percent_input, 'is a fail :(')
-
-    else:
-        clear_console()
-        print('Please only enter digits\n')
-        grade_percent()
+for row in reversed(max_points_df['date']):
+    if user_date >= row:
+        max_points = max_points_df[max_points_df.date == row].iloc[0, 2]
+        break
 
 
 def main():
-    clear_console()
     welcome()
-    choose_option()
+    while True:
+        def validate(users_input):
+            if users_input > max_points:
+                raise Exception(f'\nPoints entered are higher than the current max points of {max_points}\n')
+
+        try:
+            user_points = int(input("Enter your current total points: "))
+            validate(user_points)
+        except ValueError:
+            print('Please only enter numbers.')
+            logging.warning('User entered non-numbers in total_points')
+        except Exception:
+            print(f'Points entered are higher than the current max points of {max_points}')
+            logging.warning('User entered points higher than max available points')
+        else:
+            logging.info('User entered input correctly')
+            break
+
+    # get grade percent
+    grade_percent = user_points / max_points
+    logging.info('User - max points: %s, input points: %s', max_points, user_points)
+
+    # grade scale as index
+    grade_scale_query = pd.read_sql('select * from grade_scale', app.database.connect_to_db.conn)
+    grade_scale_query = pd.DataFrame(grade_scale_query)
+    for record in grade_scale_query['grade_percent']:
+        print(record)
+
+    logging.debug('End of main()')
+
 
 
 main()
