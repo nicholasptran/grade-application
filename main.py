@@ -4,8 +4,11 @@ import os
 import platform
 import logging
 import datetime
+import warnings
 import pandas as pd
 import app
+
+warnings.filterwarnings('ignore')
 
 logging.debug('App started')
 
@@ -39,22 +42,40 @@ Grade Calculator
     logging.debug('Printed welcome screen')
 
 
-def raise_func(ex):
-    '''use to raise an exception in a lambda function'''
-    raise ex
-
-# TODO turn the max points into a function
 # get query as df and find threshold date for max points
-max_points_query = pd.read_sql('select * from thresholds', app.database.connect_to_db.conn)
+def get_max_points():
+    '''gets max possible points based on the day it is'''
+    max_points_query = pd.read_sql('select * from thresholds', app.database.connect_to_db.conn)
+
+    # returns the max points of the last passed date threshold
+    max_points_df = pd.DataFrame(max_points_query)
+
+    # instead of using reversed, I could have changed the order by in the sql statement
+    for row in reversed(max_points_df['date']):
+        if user_date >= row:
+            max_points = max_points_df[max_points_df.date == row].iloc[0, 2]
+            return max_points
+
+max_points = get_max_points()
 
 
-# returns the max points of the last passed date threshold
-max_points_df = pd.DataFrame(max_points_query)
+def get_max_grade(input_points, max_possible_points):
+    '''take user input points and max points to lookup id for grade and return the grade'''
+    grade_percent = input_points / max_possible_points
+    logging.info('User - max points: %s, input points: %s', max_possible_points, input_points)
 
-for row in reversed(max_points_df['date']):
-    if user_date >= row:
-        max_points = max_points_df[max_points_df.date == row].iloc[0, 2]
-        break
+    grade_scale_query = pd.read_sql('select * from grade_scale', app.database.connect_to_db.conn)
+    grade_scale_query = pd.DataFrame(grade_scale_query)
+
+
+    # for record in grade_scale_query['grade_percent']:
+    #     if grade_percent >= record:
+    #         grade_scale_id = grade_scale_query[grade_scale_query.grade_percent == record].iloc[0, 0]
+    #         print(grade_scale_id)
+    #         return grade_scale_id
+    return grade_scale_query
+
+
 
 
 def main():
@@ -72,20 +93,17 @@ def main():
             logging.warning('User entered non-numbers in total_points')
         except Exception:
             print(f'Points entered are higher than the current max points of {max_points}')
-            logging.warning('User entered points higher than max available points')
+            logging.error("Exception Occurred", exc_info=True)
         else:
             logging.info('User entered input correctly')
             break
+    
+    test = get_max_grade(user_points, max_points)
+    
+    print(test)
 
-    # get grade percent
-    grade_percent = user_points / max_points
-    logging.info('User - max points: %s, input points: %s', max_points, user_points)
 
-    # grade scale as index
-    grade_scale_query = pd.read_sql('select * from grade_scale', app.database.connect_to_db.conn)
-    grade_scale_query = pd.DataFrame(grade_scale_query)
-    for record in grade_scale_query['grade_percent']:
-        print(record)
+
 
     logging.debug('End of main()')
 

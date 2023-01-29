@@ -1,16 +1,3 @@
-2023-01-27 22:17:06,706 - INFO - Connected to database
-2023-01-27 22:17:07,687 - INFO - User entered input correctly
-2023-01-27 22:17:07,687 - INFO - User - max points: 500, input points: 1
-2023-01-27 22:17:28,677 - INFO - Connected to database
-2023-01-27 22:17:31,605 - WARNING - User entered non-numbers in total_points
-2023-01-27 22:17:32,398 - INFO - User entered input correctly
-2023-01-27 22:17:32,399 - INFO - User - max points: 500, input points: 2
-2023-01-27 22:26:54,042 - INFO - Connected to database
-2023-01-27 22:26:54,613 - INFO - User entered input correctly
-2023-01-27 22:26:54,614 - INFO - User - max points: 500, input points: 1
-2023-01-27 22:33:02,377 - INFO - Connected to database
-2023-01-27 22:33:02,924 - INFO - User entered input correctly
-2023-01-27 22:33:02,925 - INFO - User - max points: 500, input points: 1
-2023-01-27 22:33:35,241 - INFO - Connected to database
-2023-01-27 22:33:36,087 - INFO - User entered input correctly
-2023-01-27 22:33:36,087 - INFO - User - max points: 500, input points: 1
+2023-01-29 10:19:34,698 - INFO - Connected to database
+2023-01-29 10:19:35,468 - INFO - User entered input correctly
+2023-01-29 10:19:35,468 - INFO - User - max points: 500, input points: 1
