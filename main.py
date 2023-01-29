@@ -6,7 +6,9 @@ import logging
 import datetime
 import warnings
 import pandas as pd
+from sqlalchemy import text, insert, table, column
 import app
+from app.database.connect_to_db import engine
 
 warnings.filterwarnings('ignore')
 
@@ -34,9 +36,8 @@ def welcome():
     print(f"""
 Grade Calculator
 
-{user_date} - {user_name}
-
-
+{user_name}
+Max points are {max_points} as of {user_date}
 
     """)
     logging.debug('Printed welcome screen')
@@ -45,40 +46,62 @@ Grade Calculator
 # get query as df and find threshold date for max points
 def get_max_points():
     '''gets max possible points based on the day it is'''
-    max_points_query = pd.read_sql('select * from thresholds', app.database.connect_to_db.conn)
 
-    # returns the max points of the last passed date threshold
-    max_points_df = pd.DataFrame(max_points_query)
+    query = text("select top 1 * from thresholds where date <= :x order by date desc")
+    with engine.connect() as conn:
+        logging.debug("Executing max points query")
+        max_points = conn.execute(query, {'x': user_date})
+        max_points = pd.DataFrame(max_points)
 
-    # instead of using reversed, I could have changed the order by in the sql statement
-    for row in reversed(max_points_df['date']):
-        if user_date >= row:
-            max_points = max_points_df[max_points_df.date == row].iloc[0, 2]
-            return max_points
+    max_points = max_points.iloc[0,2]
+    return max_points
 
 max_points = get_max_points()
 
 
+# get max possible grade
 def get_max_grade(input_points, max_possible_points):
     '''take user input points and max points to lookup id for grade and return the grade'''
     grade_percent = input_points / max_possible_points
-    logging.info('User - max points: %s, input points: %s', max_possible_points, input_points)
 
-    grade_scale_query = pd.read_sql('select * from grade_scale', app.database.connect_to_db.conn)
-    grade_scale_query = pd.DataFrame(grade_scale_query)
+    query = text("select top 1 * from grade_scale where grade_percent <= :x")
 
+    with engine.connect() as conn:
+        logging.debug("Executing grade query")
+        grade_scale = conn.execute(query, {'x': grade_percent})
+        grade_scale = pd.DataFrame(grade_scale)
 
-    # for record in grade_scale_query['grade_percent']:
-    #     if grade_percent >= record:
-    #         grade_scale_id = grade_scale_query[grade_scale_query.grade_percent == record].iloc[0, 0]
-    #         print(grade_scale_id)
-    #         return grade_scale_id
-    return grade_scale_query
+    # insert into db
+    grade_audit = table("grade_audit",
+                        column("username"),
+                        column("date"),
+                        column("grade_scale_id"))
 
+    # assign index locations to variables, if empty query then id = 12 as fail
+    try:
+        letter_grade = grade_scale.iloc[0,1]
+        gpa = grade_scale.iloc[0,3]
+        grade_scale_id = grade_scale.iloc[0,0]
+    except IndexError:
+        grade_scale_id = 12
+        return "You've failed :("
+    finally:
+        insert_query = (
+    insert(grade_audit).
+    values(username=user_name, date=text('getdate()'), grade_scale_id = int(grade_scale_id))
+    )
+        with engine.connect() as conn:
+            conn.execute(insert_query)
+            conn.commit()
+            logging.info("Created new record")
 
+    return_string = f'\n{input_points} points out of {max_possible_points} possible is a {letter_grade} or a {gpa}.'
+
+    return return_string
 
 
 def main():
+    logging.info("Started main()")
     welcome()
     while True:
         def validate(users_input):
@@ -97,15 +120,14 @@ def main():
         else:
             logging.info('User entered input correctly')
             break
-    
-    test = get_max_grade(user_points, max_points)
-    
-    print(test)
+
+
+    grade = get_max_grade(user_points, max_points)
+    print(grade)
 
 
 
-
-    logging.debug('End of main()')
+    logging.info('End of main()')
 
 
 

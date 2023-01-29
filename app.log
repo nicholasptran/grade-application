@@ -1,3 +1,87 @@
 2023-01-29 10:19:34,698 - INFO - Connected to database
 2023-01-29 10:19:35,468 - INFO - User entered input correctly
 2023-01-29 10:19:35,468 - INFO - User - max points: 500, input points: 1
+2023-01-29 11:37:05,705 - INFO - Connected to database
+2023-01-29 11:37:19,771 - INFO - Connected to database
+2023-01-29 11:37:24,981 - INFO - User entered input correctly
+2023-01-29 13:16:00,297 - INFO - Connected to database
+2023-01-29 13:16:04,904 - INFO - User entered input correctly
+2023-01-29 13:16:06,933 - INFO - Connected to database
+2023-01-29 13:16:09,335 - INFO - User entered input correctly
+2023-01-29 13:16:19,810 - INFO - Connected to database
+2023-01-29 13:16:23,030 - INFO - User entered input correctly
+2023-01-29 13:16:25,074 - INFO - Connected to database
+2023-01-29 13:16:28,527 - INFO - User entered input correctly
+2023-01-29 13:17:33,978 - INFO - Connected to database
+2023-01-29 13:17:37,690 - INFO - User entered input correctly
+2023-01-29 13:17:47,934 - INFO - Connected to database
+2023-01-29 13:17:51,989 - INFO - User entered input correctly
+2023-01-29 13:17:59,984 - INFO - Connected to database
+2023-01-29 13:18:03,236 - INFO - User entered input correctly
+2023-01-29 13:18:35,603 - INFO - Connected to database
+2023-01-29 13:18:44,341 - INFO - User entered input correctly
+2023-01-29 13:29:11,729 - INFO - Connected to database
+2023-01-29 13:29:15,052 - INFO - User entered input correctly
+2023-01-29 13:29:17,350 - INFO - Connected to database
+2023-01-29 13:29:19,615 - INFO - User entered input correctly
+2023-01-29 13:29:24,680 - INFO - Connected to database
+2023-01-29 13:29:27,551 - INFO - User entered input correctly
+2023-01-29 13:29:29,628 - INFO - Connected to database
+2023-01-29 13:29:32,685 - INFO - User entered input correctly
+2023-01-29 13:31:40,139 - INFO - Connected to database
+2023-01-29 13:31:42,490 - INFO - Started main()
+2023-01-29 13:31:43,391 - INFO - User entered input correctly
+2023-01-29 13:31:43,543 - INFO - End of main()
+2023-01-29 13:32:58,797 - INFO - Connected to database
+2023-01-29 13:33:00,436 - INFO - Started main()
+2023-01-29 13:33:21,880 - INFO - Connected to database
+2023-01-29 13:33:23,432 - INFO - Started main()
+2023-01-29 13:33:43,572 - INFO - Connected to database
+2023-01-29 13:33:45,215 - INFO - Started main()
+2023-01-29 13:34:01,828 - INFO - Connected to database
+2023-01-29 13:34:03,371 - INFO - Started main()
+2023-01-29 14:10:00,472 - INFO - Connected to database
+2023-01-29 14:10:02,903 - INFO - Started main()
+2023-01-29 14:10:04,132 - INFO - User entered input correctly
+2023-01-29 14:10:04,385 - INFO - End of main()
+2023-01-29 14:10:26,866 - INFO - Connected to database
+2023-01-29 14:10:29,408 - INFO - Started main()
+2023-01-29 14:10:30,214 - INFO - User entered input correctly
+2023-01-29 14:11:07,352 - INFO - Connected to database
+2023-01-29 14:11:09,366 - INFO - Started main()
+2023-01-29 14:11:10,429 - INFO - User entered input correctly
+2023-01-29 14:11:10,777 - INFO - Created new record
+2023-01-29 14:11:10,777 - INFO - End of main()
+2023-01-29 14:11:12,745 - INFO - Connected to database
+2023-01-29 14:11:14,139 - INFO - Started main()
+2023-01-29 14:11:14,859 - INFO - User entered input correctly
+2023-01-29 14:11:15,010 - INFO - End of main()
+2023-01-29 14:24:54,526 - INFO - Connected to database
+2023-01-29 14:24:56,786 - INFO - Started main()
+2023-01-29 14:24:57,878 - INFO - User entered input correctly
+2023-01-29 14:24:57,878 - INFO - End of main()
+2023-01-29 14:26:54,887 - INFO - Connected to database
+2023-01-29 14:26:56,856 - INFO - Started main()
+2023-01-29 14:26:57,683 - INFO - User entered input correctly
+2023-01-29 14:26:57,995 - INFO - Created new record
+2023-01-29 14:26:57,996 - INFO - End of main()
+2023-01-29 14:26:59,988 - INFO - Connected to database
+2023-01-29 14:27:01,450 - INFO - Started main()
+2023-01-29 14:27:02,506 - INFO - User entered input correctly
+2023-01-29 14:27:03,289 - INFO - Created new record
+2023-01-29 14:27:03,289 - INFO - End of main()
+2023-01-29 14:29:55,103 - INFO - Connected to database
+2023-01-29 14:29:57,609 - INFO - Started main()
+2023-01-29 14:29:58,312 - WARNING - User entered non-numbers in total_points
+2023-01-29 14:29:59,940 - ERROR - Exception Occurred
+Traceback (most recent call last):
+  File "/home/nicholas/Documents/github/grade-application/main.py", line 113, in main
+    validate(user_points)
+  File "/home/nicholas/Documents/github/grade-application/main.py", line 109, in validate
+    raise Exception(f'\nPoints entered are higher than the current max points of {max_points}\n')
+Exception: 
+Points entered are higher than the current max points of 500
+
+2023-01-29 14:30:02,065 - INFO - User entered input correctly
+2023-01-29 14:30:02,703 - INFO - Created new record
+2023-01-29 14:30:02,703 - INFO - End of main()
